@@ -11,13 +11,4 @@ class Membership < ApplicationRecord
     class_name: :Campaign,
     foreign_key: :campaign_id,
     primary_key: :id
-
-
-  def pending?
-    self.pending == true
-  end
-
-  def approved?
-    self.pending == false
-  end
 end
