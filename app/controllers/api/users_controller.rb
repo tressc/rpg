@@ -8,9 +8,7 @@ class Api::UsersController < ApplicationController
       @users = User.search(params[:query])
       render :search
     else
-      # TODO: Remove if never needed
-      @user = User.all
-      render :index
+      render json: ["no query"], status: 403
     end
   end
 

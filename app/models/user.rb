@@ -20,14 +20,6 @@ class User < ApplicationRecord
 
   after_initialize :ensure_session_token
 
-  def approved_memberships
-    self.memberships.where(pending: false)
-  end
-
-  def pending_memberships
-    self.memberships.where(pending: true)
-  end
-
   def self.find_by_credentials(username, password)
     user = User.find_by(username: username)
     user && user.is_password?(password) ? user : nil
@@ -61,5 +53,21 @@ class User < ApplicationRecord
 
   def ensure_session_token
     self.session_token ||= User.generate_token
+  end
+
+  def active_memberships
+    self.memberships.where(pending: false)
+  end
+
+  def pending_memberships
+    self.memberships.where(pending: true)
+  end
+
+  def campaign_ids
+    self.active_memberships.map(&:campaign_id)
+  end
+
+  def pending_ids
+    self.pending_memberships.map(&:id)
   end
 end
